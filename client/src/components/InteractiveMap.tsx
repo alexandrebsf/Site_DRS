@@ -139,17 +139,17 @@ export default function InteractiveMap({
       );
     
     // Adicionar label com comprimento no meio da linha
-    const labelMidLat = (startLat + endLat) / 2;
-    const labelMidLng = (startLng + endLng) / 2;
-    L.marker([labelMidLat, labelMidLng], {
-      icon: L.divIcon({
-        html: `<div style="background: ${color}; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; white-space: nowrap;">${distanceMeters.toFixed(0)}m</div>`,
-        className: '',
-        iconSize: [0, 0],
-        popupAnchor: [0, 0]
-      })
-    })
-      .addTo(markersGroupRef.current!);
+   // const labelMidLat = (startLat + endLat) / 2;
+    //const labelMidLng = (startLng + endLng) / 2;
+    //L.marker([labelMidLat, labelMidLng], {
+    //  icon: L.divIcon({
+    //    html: `<div style="background: ${color}; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: bold; white-space: nowrap;">${distanceMeters.toFixed(0)}m</div>`,
+    //    className: '',
+    //    iconSize: [0, 0],
+    //    popupAnchor: [0, 0]
+      //})
+    //})
+    //  .addTo(markersGroupRef.current!);
   };
 
   const drawArc = () => {
@@ -274,18 +274,20 @@ export default function InteractiveMap({
       // Calcular ângulo B: Angulo P - arctan(Distancia A / Distancia X)
       let anguloB = anguloP; // Default
       if (distanciaX > 0 && distanciaA > 0) {
-        const arctanValue = Math.atan(distanciaA / distanciaX) * (180 / Math.PI);
-        anguloB = anguloP - arctanValue;
+        const arcsinValue = Math.asin(distanciaW / distanciaX) * (180 / Math.PI);
+        anguloB = arcsinValue;
       }
 
       // Calcular comprimento de F e G usando lei dos cossenos com ângulo B
       // comprimento = sqrt(D^2 + X^2 - 2*D*X*cos(B))
       let distanciaF = distanciaX; // Default
       const cosAnguloB = Math.cos((anguloB * Math.PI) / 180);
-      const distanciaFSquared = (distanciaD * distanciaD) + (distanciaX * distanciaX) - (2 * distanciaD * distanciaX * cosAnguloB);
-      if (distanciaFSquared > 0) {
-        distanciaF = Math.sqrt(distanciaFSquared);
-      }
+      const tanAnguloP = Math.tan((anguloP * Math.PI) / 180);
+      distanciaF = (distanciaX * cosAnguloB) - (distanciaW / tanAnguloP )
+      //const distanciaFSquared = (distanciaD * distanciaD) + (distanciaX * distanciaX) - (2 * distanciaD * distanciaX * cosAnguloB);
+      //if (distanciaFSquared > 0) {
+      //  distanciaF = Math.sqrt(distanciaFSquared);
+      //}
 
       // Linha D: Direcao de Tiro + Angulo de Dispersao + Angulo P
       drawLine('D', direcaoTiro + anguloDispersao + anguloP, '#0000FF', '1, 1', 'D', latitude, longitude, distanciaD);
@@ -351,7 +353,7 @@ export default function InteractiveMap({
         // Calcular comprimento de J e K
         // comprimento = D + (A/sin(P)) - (A/tan(P)) - (A/tan(25))
         const sinAnguloP = Math.sin((anguloP * Math.PI) / 180);
-        const tanAnguloP = Math.tan((anguloP * Math.PI) / 180);
+        
         const tan25 = Math.tan((25 * Math.PI) / 180);
         
         let distanciaJ = distanciaD;
@@ -389,14 +391,14 @@ export default function InteractiveMap({
         
         // Calcular angulo L = arcsin((A + W) / R)
         const R = 6371000;
-        const anguloLRad = Math.asin((distanciaA + distanciaW) / R);
+        const anguloLRad = Math.asin((distanciaA + distanciaW) / distanciaX);
         
         // Comprimento de L e M = (X + B) * cos(L) - J * cos(P) - H * cos(P + 25)
         const cosAnguloL = Math.cos(anguloLRad);
         const cosAnguloP = Math.cos((anguloP * Math.PI) / 180);
         const cosAngloPPlus25 = Math.cos(((anguloP + 25) * Math.PI) / 180);
         
-        const distanciaL = raioCirculo * cosAnguloL - distanciaJ * cosAnguloP - distanciaH * cosAngloPPlus25;
+        const distanciaL = (raioCirculo * cosAnguloL) - distanciaJ * cosAnguloP - distanciaH * cosAngloPPlus25;
         const distanciaM = distanciaL;
         
         drawLine('L', bearingF, '#FF0000', '1, 1', 'L', endLatJ, endLngJ, Math.max(0, distanciaL));
@@ -483,10 +485,12 @@ export default function InteractiveMap({
     }
   };
 
+  
+
   return (
     <div className="relative w-full h-full">
       <div id="map" className="w-full h-full" />
-      <div className="absolute top-4 right-4 z-10 bg-white p-2 rounded-lg shadow-lg">
+      <div className="absolute top-4 right-4 z-[1000] bg-white p-2 rounded-lg shadow-lg">
         <div className="text-xs font-semibold mb-2">Camadas:</div>
         <div className="space-y-1">
           {layers.map((layer) => (

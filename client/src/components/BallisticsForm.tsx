@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export interface BallisticsData {
-  // Parâmetros de munição/impacto
   munição: 'explosiva' | 'nao-explosiva';
   tipoImpacto: 'terra' | 'metal';
   anguloDispersao: number;
@@ -16,7 +15,6 @@ export interface BallisticsData {
   distanciaA: number;
   distanciaB: number;
   alturaMaxima: number;
-  // Parâmetros de localização
   latitude: number;
   longitude: number;
   direcaoTiro: number;
@@ -65,50 +63,55 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Parâmetros Balísticos</CardTitle>
-        <CardDescription>Configure os parâmetros de munição e localização</CardDescription>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Parâmetros Balísticos</CardTitle>
+        <CardDescription className="text-xs">Configure munição e localização</CardDescription>
       </CardHeader>
+
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Seção de Munição */}
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Seção Munição */}
+          <div className="space-y-2">
             <h3 className="font-semibold text-sm">Munição e Impacto</h3>
-            
-            <div className="space-y-2">
-              <Label htmlFor="munição">Munição</Label>
-              <Select
-                value={formData.munição}
-                onValueChange={(value) => handleSelectChange('munição', value)}
-              >
-                <SelectTrigger id="munição">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="explosiva">Explosiva</SelectItem>
-                  <SelectItem value="nao-explosiva">Não explosiva</SelectItem>
-                </SelectContent>
-              </Select>
+
+            {/* Linha 1: munição e tipo de impacto */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="munição">Munição</Label>
+                <Select
+                  value={formData.munição}
+                  onValueChange={(value) => handleSelectChange('munição', value)}
+                >
+                  <SelectTrigger id="munição">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="explosiva">Explosiva</SelectItem>
+                    <SelectItem value="nao-explosiva">Não explosiva</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="tipoImpacto">Tipo de Impacto</Label>
+                <Select
+                  value={formData.tipoImpacto}
+                  onValueChange={(value) => handleSelectChange('tipoImpacto', value)}
+                >
+                  <SelectTrigger id="tipoImpacto">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="terra">Terra</SelectItem>
+                    <SelectItem value="metal">Metal</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="tipoImpacto">Tipo de Impacto</Label>
-              <Select
-                value={formData.tipoImpacto}
-                onValueChange={(value) => handleSelectChange('tipoImpacto', value)}
-              >
-                <SelectTrigger id="tipoImpacto">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="terra">Terra</SelectItem>
-                  <SelectItem value="metal">Metal</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            {/* Linha 2 */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
                 <Label htmlFor="anguloDispersao">Ângulo Dispersão (°)</Label>
                 <Input
                   id="anguloDispersao"
@@ -119,7 +122,7 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label htmlFor="distanciaX">Distância X (m)</Label>
                 <Input
                   id="distanciaX"
@@ -132,8 +135,9 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            {/* Linha 3 */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
                 <Label htmlFor="anguloP">Ângulo P (°)</Label>
                 <Input
                   id="anguloP"
@@ -144,7 +148,7 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label htmlFor="distanciaW">Distância W (m)</Label>
                 <Input
                   id="distanciaW"
@@ -157,8 +161,9 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            {/* Linha 4 */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
                 <Label htmlFor="distanciaA">Distância A (m)</Label>
                 <Input
                   id="distanciaA"
@@ -169,7 +174,7 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label htmlFor="distanciaB">Distância B (m)</Label>
                 <Input
                   id="distanciaB"
@@ -182,7 +187,8 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
               </div>
             </div>
 
-            <div className="space-y-2">
+            {/* Linha 5 */}
+            <div className="space-y-1">
               <Label htmlFor="alturaMaxima">Altura Máxima (m)</Label>
               <Input
                 id="alturaMaxima"
@@ -195,12 +201,12 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
             </div>
           </div>
 
-          {/* Seção de Localização */}
-          <div className="space-y-4 pt-4 border-t">
+          {/* Seção Localização */}
+          <div className="space-y-2 pt-3 border-t">
             <h3 className="font-semibold text-sm">Localização</h3>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
                 <Label htmlFor="latitude">Latitude</Label>
                 <Input
                   id="latitude"
@@ -211,7 +217,7 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label htmlFor="longitude">Longitude</Label>
                 <Input
                   id="longitude"
@@ -224,7 +230,7 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="direcaoTiro">Direção de Tiro (°)</Label>
               <Input
                 id="direcaoTiro"
@@ -239,7 +245,7 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
             </div>
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full mt-3">
             Calcular Trajetória
           </Button>
         </form>
@@ -247,4 +253,6 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
     </Card>
   );
 }
+
+
 
