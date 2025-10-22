@@ -36,9 +36,9 @@ export default function BallisticsForm({ onSubmit, initialData }: BallisticsForm
     distanciaA: initialData?.distanciaA ?? 615,
     distanciaB: initialData?.distanciaB ?? 615,
     alturaMaxima: initialData?.alturaMaxima ?? 1090,
-    latitude: initialData?.latitude || -23.5505,
-    longitude: initialData?.longitude || -46.6333,
-    direcaoTiro: initialData?.direcaoTiro || 0,
+    latitude: initialData?.latitude || -15.6679,
+    longitude: initialData?.longitude || -47.2298,
+    direcaoTiro: initialData?.direcaoTiro || 193,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
