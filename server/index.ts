@@ -1,3 +1,4 @@
+/*
 import express from "express";
 import { createServer } from "http";
 import path from "path";
@@ -31,3 +32,4 @@ async function startServer() {
 }
 
 startServer().catch(console.error);
+*/
