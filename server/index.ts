@@ -10,19 +10,22 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // ✅ Caminho fixo e correto para build do Vite
+  // Garante que estamos pegando o index certo
   const staticPath = path.resolve(__dirname, "public");
+  console.log("📁 Servindo arquivos de:", staticPath);
 
-  // Serve arquivos estáticos
+  // Serve o front-end buildado
   app.use(express.static(staticPath));
 
-  // Roteamento SPA
-  app.get("*", (_req, res) => {
+  // Redireciona qualquer rota pro index.html (SPA)
+  app.get("*", (_, res) => {
     res.sendFile(path.join(staticPath, "index.html"));
   });
 
   const port = process.env.PORT || 3000;
-  server.listen(port, () => console.log(`🚀 Server running on port ${port}`));
+  server.listen(port, () => {
+    console.log(`🚀 Server running on http://localhost:${port}`);
+  });
 }
 
 startServer().catch(console.error);
