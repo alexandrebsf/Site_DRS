@@ -22,16 +22,10 @@ function Router() {
 
 function App() {
   return (
-    
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <Toaster />
+
+          
           <Router />
-        </TooltipProvider>
-      </ThemeProvider>
+
 
   );
 }
